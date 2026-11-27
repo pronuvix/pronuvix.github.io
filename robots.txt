@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://pronuvix.github.io/sitemap.xml
