@@ -19,6 +19,8 @@ const assert = require('node:assert/strict');
     assert(response.ok()); await page.evaluate(()=>document.fonts.ready);
     await page.screenshot({path:'homepage-previews/'+key+'.png',fullPage:true});
     assert.equal(await page.locator('h1').count(),1);
+    assert(await page.locator('nav .brandmark img').evaluate(i=>i.naturalWidth>=512),'Low resolution navigation logo');
+    assert(await page.locator('footer .brandmark img').evaluate(i=>i.naturalWidth>=512),'Low resolution footer logo');
     const mobile=page.locator('.mobile-nav');
     assert.equal(await mobile.isVisible(),width<=750);
     if(width<=750){
