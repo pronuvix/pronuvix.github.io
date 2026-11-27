@@ -19,6 +19,17 @@ const assert = require('node:assert/strict');
     assert(response.ok()); await page.evaluate(()=>document.fonts.ready);
     await page.screenshot({path:'homepage-previews/'+key+'.png',fullPage:true});
     assert.equal(await page.locator('h1').count(),1);
+    const mobile=page.locator('.mobile-nav');
+    assert.equal(await mobile.isVisible(),width<=750);
+    if(width<=750){
+      await mobile.locator('summary').click();
+      assert(await mobile.locator('a').first().isVisible());
+      assert.equal(await mobile.locator('a').count(),4);
+      await mobile.locator('summary').click();
+    }else{assert(await page.locator('.primary-links').isVisible());}
+    const demo=await page.locator('.hero-cta').first().getAttribute('href');
+    assert.equal(demo,'/zelunvo/demo/'+lang+'/');
+    assert((await page.request.get(base+demo)).ok());
     assert.equal(await page.locator('nav [aria-current=page]').count(),1);
     assert.equal(await page.locator('footer .footer-group').count(),3);
     assert.equal(await page.locator('a[href^="mailto:"]').count(),0);
